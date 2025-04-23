@@ -15,30 +15,62 @@ This project enables developers and analysts to query relational databases using
 - ✅ SQL safety validation (blocks DROP, DELETE, ALTER...)
 - ♻ Supports SQLite, PostgreSQL, MySQL
 - 📄 Output formats: JSON, CSV, HTML
+- ⚙ Ready for production deployment or integration
 
 ---
 
 ## 🚀 Quick Start
 
-### 1. Clone the repository
+### ▶️ Option 1: Use as a Python module
+You can directly import and use the library in your Python scripts:
+
+```python
+from nlp2sql import generate_sql, run_query, is_safe_sql
+
+schema = """
+Tabela: vendas
+Colunas:
+- id (INTEGER)
+- produto (TEXT)
+- quantidade (INTEGER)
+- preco (REAL)
+- data (TEXT)
+"""
+
+question = "Qual o total vendido por produto?"
+db_uri = "sqlite:///example.db"
+openai_key = "sk-..."
+
+sql = generate_sql(question, schema, openai_key)
+
+if is_safe_sql(sql):
+    result = run_query(db_uri, sql, as_json=True)
+    print(result)
+else:
+    print("Unsafe SQL detected")
+```
+
+### 🌐 Option 2: Run the API server
+
+#### 1. Clone the repository
 ```bash
 git clone https://github.com/williamhnyohei/NLP-to-SQL-converter.git
 cd NLP-to-SQL-converter
 ```
 
-### 2. Install dependencies
+#### 2. Install dependencies
 ```bash
 pip install -r requirements.txt
 ```
 
-### 3. Configure environment
+#### 3. Configure environment
 Rename the example:
 ```bash
 cp .env.example .env
 ```
 Fill in your OpenAI key and database URI.
 
-### 4. Run the API
+#### 4. Run the API
 ```bash
 uvicorn app.main:app --reload
 ```
@@ -75,6 +107,10 @@ This project is licensed under the MIT License.
 
 ---
 
+## 🙌 Contributing
+Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
+
+---
+
 ## 📖 Acknowledgments
 Built with OpenAI, SQLAlchemy, FastAPI, and love by [@williamhnyohei](https://github.com/williamhnyohei)
-
